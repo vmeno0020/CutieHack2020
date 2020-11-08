@@ -1,0 +1,67 @@
+---
+title: "CutieHack View Data"
+author: "Lauren Ebeltoft"
+date: "11/5/2020"
+output: html_document
+---
+```{r}
+library(dplyr)
+library(tidyverse)
+```
+```{r}
+# read in data
+measurements <- read.csv("C:/Users/laebe/Documents/CutieHack/acaps_covid19_government_measures_dataset.csv")
+casesO <- read.csv("C:/Users/laebe/Documents/CutieHack/time_series_covid19_confirmed_global.csv")
+recoveredO <- read.csv("C:/Users/laebe/Documents/CutieHack/time_series_covid19_recovered_global.csv")
+deathsO <- read.csv("C:/Users/laebe/Documents/CutieHack/time_series_covid19_deaths_global.csv")
+```
+
+Filter the Data by focussed Regions
+```{r}
+#measurements
+usMeasurements <- filter(measurements, measurements$COUNTRY == "United States of America")
+chinaMeasurements <- filter(measurements, measurements$COUNTRY == "China")
+europeMeasurements <- filter(measurements, (measurements$COUNTRY == "France" ) | (measurements$COUNTRY == "Italy") | (measurements$COUNTRY == "Germany") | (measurements$COUNTRY == "Spain") | (measurements$COUNTRY == "United Kingdom") | (measurements$COUNTRY == "Russian Federation"))
+
+# cases
+usCasesO <- filter(casesO, casesO$Country.Region == "US")
+chinaCasesO <- filter(casesO, casesO$Country.Region == "China")
+europeCasesO <- filter(casesO, (casesO$Country.Region == "France" ) | (casesO$Country.Region == "Italy") | (casesO$Country.Region == "Germany") | (casesO$Country.Region == "Spain") | (casesO$Country.Region == "United Kingdom") | (casesO$Country.Region == "Russia"))
+
+# recovered
+usRecoveredO <- filter(recoveredO, recoveredO$Country.Region == "US")
+chinaRecoveredO <- filter(recoveredO, recoveredO$Country.Region == "China")
+europeRecoveredO <- filter(recoveredO, (recoveredO$Country.Region == "France" ) | (recoveredO$Country.Region == "Italy") | (recoveredO$Country.Region == "Germany") | (recoveredO$Country.Region == "Spain") | (recoveredO$Country.Region == "United Kingdom") | recoveredO$Country.Region == "Russia")
+
+# deaths
+usDeathsO <- filter(deathsO, deathsO$Country.Region == "US")
+chinaDeathsO <- filter(deathsO, deathsO$Country.Region == "China")
+europeDeathsO <- filter(deathsO, (deathsO$Country.Region == "France" ) | (deathsO$Country.Region == "Italy") | (deathsO$Country.Region == "Germany") | (deathsO$Country.Region == "Spain") | (deathsO$Country.Region == "United Kingdom") | (deathsO$Country.Region == "Russia"))
+```
+
+```{r}
+# US Measurement Stats
+(USmeasures <- filter(measurements, measurements$COUNTRY == "United States of America") %>%
+  group_by(MEASURE) %>%
+  summarise(count = n())) %>%
+  arrange(desc(count))
+
+# China Measurement Stats
+(CHINAmeasures <- filter(measurements, measurements$COUNTRY == "China") %>%
+  group_by(MEASURE) %>%
+  summarise(count = n())) %>%
+  arrange(desc(count))
+
+# Europe Measurement Stats
+(EUROPEmeasures <- filter(measurements, (measurements$COUNTRY == "France" ) | (measurements$COUNTRY == "Italy") | (measurements$COUNTRY == "Germany") | (measurements$COUNTRY == "Spain") | (measurements$COUNTRY == "United Kingdom") | (measurements$COUNTRY == "Russian Federation")) %>%
+  group_by(MEASURE) %>%
+  summarise(count = n())) %>%
+  arrange(desc(count))
+```
+
+```{r}
+#trial
+cases <- read.csv("C:/Users/laebe/Documents/CutieHack/trans.cases.csv")
+usCases <- select(cases, US)
+usCases
+```

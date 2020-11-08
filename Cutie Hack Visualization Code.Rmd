@@ -1,0 +1,81 @@
+---
+title: "Cutie Hack COVID Visualization"
+author: "Lauren Ebeltoft"
+date: "11/7/2020"
+output: html_document
+---
+
+libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+Read Data
+```{r}
+government <- read.csv("C:/Users/laebe/Documents/CutieHack/acaps_covid19_government_measures_dataset.csv")
+cases <- read.csv("C:/Users/laebe/Documents/CutieHack/cases.csv")
+recovered <- read.csv("C:/Users/laebe/Documents/CutieHack/recovered.csv")
+deaths <- read.csv("C:/Users/laebe/Documents/CutieHack/deaths.csv")
+```
+
+Filter Regions
+```{r}
+#measurements
+usGovernment <- filter(government, government$COUNTRY == "United States of America")
+chinaGovernment <- filter(government, government$COUNTRY == "China")
+europeGovernment <- filter(government, (government$COUNTRY == "France" ) | (government$COUNTRY == "Italy") | (government$COUNTRY == "Germany") | (government$COUNTRY == "Spain") | (government$COUNTRY == "United Kingdom") | (government$COUNTRY == "Russian Federation"))
+
+# cases
+usCases <- select(cases, ï..Date, US)
+chinaCases <- select(cases, ï..Date, All.China)
+europeCases <- select(cases, ï..Date, Europe)
+
+# recovered
+usRecovered <- select(recovered, ï..date, US)
+chinaRecovered <- select(recovered, ï..date, All.China)
+europeRecovered <- select(recovered, ï..date, Europe)
+
+# deaths
+usDeaths <- select(deaths, ï..date, US)
+chinaDeaths <- select(deaths, ï..date, All.China)
+europeDeaths <- select(deaths, ï..date, Europe)
+```
+
+Time Series Data Manipulation
+```{r}
+date <- seq(as.Date("2020-1-22"), as.Date("2020-11-3"), by = "day")
+
+# Cases
+casesUs <- ts(data = usCases$US, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+casesEurope <- ts(data = europeCases$Europe, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+casesChina <- ts(data = chinaCases$All.China, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+
+# Recovered
+recoveredUs <- ts(data = usRecovered$US, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+recoveredEurope <- ts(data = europeRecovered$Europe, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+recoveredChina <- ts(data = chinaRecovered$All.China, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+
+# Deaths
+deathsUs <- ts(data = usDeaths$US, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+deathsEurope <- ts(data = europeDeaths$Europe, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+deathsChina <- ts(data = chinaDeaths$All.China, start = c(2020, as.numeric(format(date[1], "%j"))), frequency = 365)
+```
+
+Visualization
+```{r}
+# Cases
+plot(casesUs, ylab = "Cases", type = "o", main = "US COVID Cases")
+plot(casesEurope, ylab = "Cases", type = "o", main = "Europe COVID Cases", col = "blue")
+plot(casesChina, ylab = "Cases", type = "o", main = "China COVID Cases", col = "red")
+
+# Recovered 
+plot(recoveredUs, ylab = "Recovered", type = "o", main = "US COVID Recovered")
+plot(recoveredEurope, ylab = "Recovered", type = "o", main = "Europe COVID Recovered", col = "blue")
+plot(recoveredChina, ylab = "Recovered", type = "o", main = "China COVID Recovered", col = "red")
+
+# Deaths
+plot(deathsUs, ylab = "Deaths", type = "o", main = "US COVID Deaths")
+plot(deathsEurope, ylab = "Deaths", type = "o", main = "Europe COVID Deaths", col = "blue")
+plot(deathsChina, ylab = "Deaths", type = "o", main = "China COVID Deaths", col = "red")
+```
