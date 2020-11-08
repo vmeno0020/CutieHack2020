@@ -1,0 +1,51 @@
+---
+title: "CutieHack"
+author: "Lauren Ebeltoft and Vishal Menon"
+date: "11/5/2020"
+output: html_document
+---
+```{r}
+library(dplyr)
+library(tidyverse)
+```
+```{r}
+# read in data
+measurements <- read.csv("C:/Users/laebe/Documents/CutieHack/acaps_covid19_government_measures_dataset.csv")
+measurements
+cases <- read.csv("C:/Users/laebe/Documents/CutieHack/time_series_covid19_confirmed_global.csv")
+cases
+recovered <- read.csv("C:/Users/laebe/Documents/CutieHack/time_series_covid19_recovered_global.csv")
+recovered
+deaths <- read.csv("C:/Users/laebe/Documents/CutieHack/time_series_covid19_deaths_global.csv")
+deaths
+```
+
+Filter the Data by focussed Regions
+```{r}
+#measurements
+usMeasurements <- filter(measurements, measurements$COUNTRY == "United States of America")
+usMeasurements
+chinaMeasurements <- filter(measurements, measurements$COUNTRY == "China")
+chinaMeasurements
+europeMeasurements <- filter(measurements, (measurements$COUNTRY == "France" ) | (measurements$COUNTRY == "Italy") | (measurements$COUNTRY == "Germany") | (measurements$COUNTRY == "Spain") | (measurements$COUNTRY == "United Kingdom") | (measurements$COUNTRY == "Russian Federation"))
+europeMeasurements
+```
+```{r}
+# cases
+usCases <- filter(cases, cases$Country.Region == "US")
+chinaCases <- filter(cases, cases$Country.Region == "China")
+europeCases <- filter(cases, (cases$Country.Region == "France" ) | (cases$Country.Region == "Italy") | (cases$Country.Region == "Germany") | (cases$Country.Region == "Spain") | (cases$Country.Region == "United Kingdom") | (cases$Country.Region == "Russia"))
+```
+```{r}
+# recovered
+usRecovered <- filter(recovered, recovered$Country.Region == "US")
+chinaRecovered <- filter(recovered, recovered$Country.Region == "China")
+europeRecovered <- filter(recovered, (recovered$Country.Region == "France" ) | (recovered$Country.Region == "Italy") | (recovered$Country.Region == "Germany") | (recovered$Country.Region == "Spain") | (recovered$Country.Region == "United Kingdom") | recovered$Country.Region == "Russia")
+```
+```{r}
+# deaths
+usDeaths <- filter(deaths, deaths$Country.Region == "US")
+chinaDeaths <- filter(deaths, deaths$Country.Region == "China")
+europeDeaths <- filter(deaths, (deaths$Country.Region == "France" ) | (deaths$Country.Region == "Italy") | (deaths$Country.Region == "Germany") | (deaths$Country.Region == "Spain") | (deaths$Country.Region == "United Kingdom") | (deaths$Country.Region == "Russia"))
+```
+
